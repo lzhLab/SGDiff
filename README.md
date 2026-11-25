@@ -366,9 +366,9 @@ If you use this code or the MECT dataset in your research, please cite the assoc
 ```bibtex
 @article{sgdiff,
   title   = {SGDiff: Structure-Guided Diffusion for Cross-Phase Abdominal CT Translation},
-  author  = {TODO: author list},
-  journal = {TODO: venue},
-  year    = {TODO: year}
+  author  = {Yiqi Wang, Qiang He, Qiuhao Zong, Jin Zhang, Zhicai Peng, Menglin Zhao, Liang Zhao},
+  journal = {arxiv.org},
+  year    = {2026}
 }
 ```
 
