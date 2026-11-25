@@ -72,7 +72,7 @@ The in-house **MECT** dataset comprises multiphasic abdominal contrast-enhanced 
 - the requested data scope,
 - a brief research proposal.
 
-> The maintainers should add a direct contact email to this section once an authorized address is available. Submission of a request does not guarantee approval or immediate transfer.
+s080011@e.ntu.edu.sg
 
 - The manuscript describes an in-house MECT cohort of **622 patients** with arterial (**ART**), portal venous (**PV**), and delayed (**DL**) CT phases.
 - Data provided under an approved request may be subject to de-identification, secure transfer, use restrictions, and institutional review.
