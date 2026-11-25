@@ -1,0 +1,87 @@
+model:
+  base_learning_rate: 3.60e-04
+  scale_lr: False
+  target: autoencoder.vqgan.VQGAN
+  params:
+    monitor: "val/rec_loss"
+    embed_dim: 4
+    n_embed: 8192
+    lossconfig:
+      target: autoencoder.losses.vqperceputal.VQLPIPSWithDiscriminator
+      params:
+        disc_in_channels: 1
+        disc_loss: hinge
+        codebook_weight: 1.0
+        disc_start: 20001
+        disc_num_layers: 3
+        disc_weight: 0.5
+        perceptual_weight: 1.0
+        disc_ndf: 64
+    ddconfig:
+      double_z: False
+      z_channels: 4
+      encoder:
+        target: autoencoder.aemodule3D.Encoder
+        params:
+          n_hiddens: 32
+          downsample: [1, 4, 4]
+          z_channels: 4
+          double_z: False
+          image_channel: 1
+          norm_type: group
+          padding_type: replicate
+      decoder:
+        target: autoencoder.aemodule3D.Decoder
+        params:
+          n_hiddens: 32
+          upsample: [1, 4, 4]
+          z_channels: 4
+          image_channel: 1
+          norm_type: group
+data:
+  target: train_ae.DataModuleFromConfig
+  params:
+    batch_size: 4
+    num_workers: 0
+    train:
+      target: data.mpact_dataset.CustomTrain
+      params:
+        # data_path: "/home/lzp/data/MPECT/train"
+        data_path: "/home/lzhao/data/MPECT/train"
+    validation:
+      target: data.mpact_dataset.CustomVal
+      params:
+        # data_path: "/home/lzp/data/MPECT/val"
+        data_path: "/home/lzhao/data/MPECT/val"
+    test:
+      target: data.mpact_dataset.CustomTest
+      params:
+        # data_path: "/home/lzp/data/MPECT/test"
+        data_path: "/home/lzhao/data/MPECT/test"
+lightning:
+  find_unused_parameters: True
+  callbacks:
+    image_logger:
+      target: ldm.callbacks.ImageLogger
+      params:
+        batch_frequency: 500
+        max_images: 8
+        increase_log_steps: False
+        log_to_tblogger: False
+  metrics_over_trainsteps_checkpoint:
+    target: pytorch_lightning.callbacks.ModelCheckpoint
+    params:
+      filename: "{epoch:06}-{step:09}"
+      save_weights_only: False
+      every_n_epochs: 100
+      every_n_train_steps: null
+  trainer:
+    benchmark: True
+    accumulate_grad_batches: 2
+    max_epoch: 1000
+  modelcheckpoint:
+    target: pytorch_lightning.callbacks.ModelCheckpoint
+    params:
+      every_n_epochs: 1
+      filename: "{epoch:04}-{step:06}"
+

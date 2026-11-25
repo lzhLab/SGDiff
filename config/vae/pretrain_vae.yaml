@@ -1,0 +1,46 @@
+model:
+  base_learning_rate: 0.00036
+  scale_lr: false
+  target: autoencoder.vae.AutoencoderKL
+  params:
+    monitor: val/rec_loss
+    embed_dim: 4
+    lossconfig:
+      target: autoencoder.losses.vqperceputal.LPIPSWithDiscriminator
+      params:
+        disc_start: 10001
+        kl_weight: 0.0
+        disc_num_layers: 3
+        disc_in_channels: 1
+        disc_weight: 0.5
+        perceptual_weight: 1.0
+        disc_loss: hinge
+    ddconfig:
+      double_z: true
+      z_channels: 4
+      encoder:
+        target: autoencoder.aemodule3D.Encoder
+        params:
+          n_hiddens: 32
+          downsample:
+          - 1
+          - 4
+          - 4
+          z_channels: 4
+          double_z: true
+          image_channel: 1
+          norm_type: group
+          padding_type: replicate
+      decoder:
+        target: autoencoder.aemodule3D.Encoder
+        params:
+          n_hiddens: 32
+          upsample:
+          - 1
+          - 4
+          - 4
+          z_channels: 4
+          image_channel: 1
+          norm_type: group
+    logdir: /home/lzhao/model_save/vae/logs/vae_v1_144
+  ckptdir: /home/lzhao/model_save/vae/logs/vae_v1_144/checkpoints
